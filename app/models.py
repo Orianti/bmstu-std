@@ -20,7 +20,7 @@ class Location(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='город')
     street = models.CharField(max_length=100, verbose_name='улица')
     support = models.IntegerField(verbose_name='номер опоры')
-    notes = models.TextField(verbose_name='заметки')
+    notes = models.TextField(verbose_name='заметки', default='', blank=True)
 
     def get_location(self):
         if self.support:
@@ -45,7 +45,7 @@ class State(models.Model):
     )
 
     state = models.IntegerField(choices=STATES, verbose_name='состояние')
-    logs = models.TextField(verbose_name='журнал')
+    logs = models.TextField(verbose_name='журнал', default='', blank=True)
 
     def get_state(self):
         return f'{self.get_state_display()}'
@@ -58,19 +58,19 @@ class State(models.Model):
         verbose_name_plural = 'состояния'
 
 
-class Producer(models.Model):
-    organization = models.CharField(max_length=100, verbose_name='название организации')
-    city = models.ManyToManyField(City, verbose_name='город')
-    phone = models.CharField(max_length=10, verbose_name='телефон')
-    contract_expires = models.DateField(verbose_name='срок действия договора')
-    notes = models.TextField(verbose_name='заметки')
-
-    def __str__(self):
-        return self.organization
-
-    class Meta:
-        verbose_name = 'производитель'
-        verbose_name_plural = 'производители'
+# class Producer(models.Model):
+#     organization = models.CharField(max_length=100, verbose_name='название организации')
+#     city = models.ManyToManyField(City, verbose_name='город')
+#     phone = models.CharField(max_length=10, verbose_name='телефон')
+#     contract_expires = models.DateField(verbose_name='срок действия договора')
+#     notes = models.TextField(verbose_name='заметки')
+#
+#     def __str__(self):
+#         return self.organization
+#
+#     class Meta:
+#         verbose_name = 'производитель'
+#         verbose_name_plural = 'производители'
 
 
 class Specifications(models.Model):
@@ -86,10 +86,13 @@ class Specifications(models.Model):
     )
 
     type = models.IntegerField(choices=TYPES, verbose_name='тип')
-    producer = models.ForeignKey(Producer, on_delete=models.CASCADE, verbose_name='производитель')
+
+    # producer = models.ForeignKey(Producer, on_delete=models.CASCADE, verbose_name='производитель')
+    producer = models.CharField(max_length=100, verbose_name='производитель')
+
     date_of_manufacture = models.DateField(verbose_name='дата производства')
     service_frequency = models.IntegerField(verbose_name='частота сервисного обслуживания')
-    notes = models.TextField(verbose_name='заметки')
+    notes = models.TextField(verbose_name='заметки', default='', blank=True)
 
     objects = SpecificationsManager()
 
@@ -122,34 +125,37 @@ class Camera(models.Model):
         verbose_name_plural = 'камеры'
 
 
-class ServiceOrganization(models.Model):
-    organization = models.CharField(max_length=100, verbose_name='название организации')
-    city = models.ManyToManyField(City, verbose_name='город')
-    phone = models.CharField(max_length=10, verbose_name='телефон')
-    contract_expires = models.DateField(verbose_name='срок действия договора')
-    notes = models.TextField(verbose_name='заметки')
-
-    def __str__(self):
-        return self.organization
-
-    def is_approaching(self):
-        return 0 < (self.contract_expires - datetime.date.today()).days < 30
-
-    def is_expired(self):
-        return self.contract_expires < datetime.date.today()
-
-    class Meta:
-        verbose_name = 'сервисная организация'
-        verbose_name_plural = 'сервисные организации'
+# class ServiceOrganization(models.Model):
+#     organization = models.CharField(max_length=100, verbose_name='название организации')
+#     city = models.ManyToManyField(City, verbose_name='город')
+#     phone = models.CharField(max_length=10, verbose_name='телефон')
+#     contract_expires = models.DateField(verbose_name='срок действия договора')
+#     notes = models.TextField(verbose_name='заметки')
+#
+#     def is_approaching(self):
+#         return 0 < (self.contract_expires - datetime.date.today()).days < 30
+#
+#     def is_expired(self):
+#         return self.contract_expires < datetime.date.today()
+#
+#     def __str__(self):
+#         return self.organization
+#
+#     class Meta:
+#         verbose_name = 'сервисная организация'
+#         verbose_name_plural = 'сервисные организации'
 
 
 class Service(models.Model):
     camera = models.ForeignKey(Camera, on_delete=models.CASCADE, verbose_name='ID камеры')
-    service_organization = models.ForeignKey(ServiceOrganization, on_delete=models.CASCADE,
-                                             verbose_name='сервисная организация')
+
+    # service_organization = models.ForeignKey(ServiceOrganization, on_delete=models.CASCADE,
+    #                                          verbose_name='сервисная организация')
+    service_organization = models.CharField(max_length=100, verbose_name='сервисная организация')
+
     registration_date = models.DateField(auto_now_add=True)
     service_data = models.DateField(verbose_name='дата сервиса')
-    info = models.TextField(verbose_name='информация')
+    info = models.TextField(verbose_name='информация', default='', blank=True)
 
     objects = ServiceManager()
 

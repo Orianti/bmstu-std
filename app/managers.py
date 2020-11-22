@@ -3,9 +3,9 @@ import datetime
 from django.db import models
 
 
-class ProducerManager(models.Manager):
-    def get_by_city(self, city):
-        return self.filter(city__name=city)
+# class ProducerManager(models.Manager):
+#     def get_by_city(self, city):
+#         return self.filter(city__name=city)
 
 
 class SpecificationsManager(models.Manager):
@@ -41,9 +41,9 @@ class CameraManager(models.Manager):
         return self.filter(pk__in=pk)
 
 
-class ServiceOrganizationManager(models.Manager):
-    def get_by_city(self, city):
-        return self.filter(city__name=city)
+# class ServiceOrganizationManager(models.Manager):
+#     def get_by_city(self, city):
+#         return self.filter(city__name=city)
 
 
 class ServiceManager(models.Manager):
