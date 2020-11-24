@@ -3,10 +3,13 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-# from .forms import ServiceForm, CameraForm, AuthUserForm, ServiceOrganizationForm
-# from .models import Camera, Service, ServiceOrganization
-from .forms import ServiceForm, CameraForm, AuthUserForm
-from .models import Camera, Service
+# from app.forms import ServiceForm, CameraForm, AuthUserForm, ServiceOrganizationForm
+# from app.models import Camera, Service, ServiceOrganization
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ModelViewSet
+
+from app.forms import ServiceForm, CameraForm, AuthUserForm
+from app.serializers import *
 
 
 class CameraListView(ListView):
@@ -162,3 +165,38 @@ class AppLogoutView(LogoutView):
 #     model = ServiceOrganization
 #     template_name = 'app/contracts.html'
 #     success_url = reverse_lazy('service_org_list')
+
+class CityViewSet(ModelViewSet):
+    queryset = City.objects.all()
+    serializer_class = CitySerializer
+    permission_classes = [IsAuthenticated]
+
+
+class LocationViewSet(ModelViewSet):
+    queryset = Location.objects.all()
+    serializer_class = LocationSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class StateViewSet(ModelViewSet):
+    queryset = State.objects.all()
+    serializer_class = StateSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class SpecificationsViewSet(ModelViewSet):
+    queryset = Specifications.objects.all()
+    serializer_class = SpecificationsSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class CameraViewSet(ModelViewSet):
+    queryset = Camera.objects.all()
+    serializer_class = CameraSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class ServiceViewSet(ModelViewSet):
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
+    permission_classes = [IsAuthenticated]
