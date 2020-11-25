@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Аудит
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-8 align-self-center">
+                <h3>Список неисправных камер</h3>
+            </div>
+            <div class="col-1 text-right align-self-center">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Сортировка
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="{% url 'audit_camera' %}">
+                            Сначала более важные
+                        </a>
+                        <a class="dropdown-item" href="{% url 'audit_camera_reverse' %}">
+                            Сначала менее важные
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 align-self-center text-right">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    🞣 Добавить сервис
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row border-bottom mt-4">
+            <div class="col-1">
+                <b>Номер</b>
+            </div>
+            <div class="col-7">
+                <b>Местоположение</b>
+            </div>
+            <div class="col-2">
+                <b>Состояние</b>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        {% for camera in cameras %}
+            <div class="row mt-2">
+                <div class="col-1">
+                    {{ camera.pk }}
+                </div>
+                <div class="col-7">
+                    {{ camera.location.get_location }}
+                </div>
+                <div class="col-2">
+                    {% if camera.state.state == 0 %}
+                        <span class="badge badge-pill badge-success">Исправна</span>
+                    {% elif camera.state.state == 1 %}
+                        <span class="badge badge-pill badge-warning">Предупреждение</span>
+                    {% elif camera.state.state == 2 %}
+                        <span class="badge badge-pill badge-danger">Ошибка</span>
+                    {% elif camera.state.state == 3 %}
+                        <span class="badge badge-pill badge-dark">Отказ</span>
+                    {% endif %}
+                </div>
+                <div class="col-2 text-right">
+                    <a href="audit/detail/{{ camera.pk }}" class="mr-1">Подробнее</a>
+                    <a href="audit/services/{{ camera.pk }}">Сервисы</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Добавление сервиса</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="add_form" method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                    <button form="add_form" type="submit" class="btn btn-primary">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

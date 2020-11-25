@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Сервисные организации
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-9 align-self-center">
+                <h3>Список сервисных организаций</h3>
+            </div>
+            <div class="col-3 align-self-center text-right">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    🞣 Добавить организацию
+                </button>
+            </div>
+        </div>
+    </div>
+
+    {% if update %}
+        <div class="container mt-4 align-self-center border rounded bg-light">
+            <div class="row p-3">
+                <h5>Редактирование организации</h5>
+            </div>
+            <div class="row p-3">
+                <form id="add_form" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                </form>
+            </div>
+            <div class="row p-3">
+                <a href="{% url 'service_org_list' %}">
+                    <button type="button" class="btn btn-secondary mr-2">
+                        Отменить
+                    </button>
+                </a>
+                <button form="add_form" type="submit" class="btn btn-primary">
+                    Изменить
+                </button>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="container">
+        <div class="row border-bottom mt-4">
+            <div class="col-1">
+                <b>Номер</b>
+            </div>
+            <div class="col-3">
+                <b>Название</b>
+            </div>
+            <div class="col-2">
+                <b>Город</b>
+            </div>
+            <div class="col-2">
+                <b>Телефон</b>
+            </div>
+            <div class="col-2">
+                <b>Договор до</b>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        {% for organization in service_organizations %}
+            <div class="row mt-2">
+                <div class="col-1">
+                    {{ organization.pk }}
+                </div>
+
+                <div class="col-3">
+                    {{ organization.organization }}
+                </div>
+
+                <div class="col-2">
+                    {% for city in organization.city.all %}
+                        {{ city.name }}<br>
+                    {% endfor %}
+                </div>
+
+                <div class="col-2">
+                    {{ organization.phone }}
+                </div>
+
+                <div class="col-2">
+                    {{ organization.contract_expires }}
+                    {% if organization.is_approaching %}
+                        <span class="badge badge-pill badge-warning ">
+                            !
+                        </span>
+                    {% elif organization.is_expired %}
+                        <span class="badge badge-pill badge-danger">
+                            !
+                        </span>
+                    {% endif %}
+                </div>
+
+                <form class="delete-form" data-id="{{ organization.pk }}"
+                      action="{% url 'service_org_delete' organization.pk %}" method="post">
+                    {% csrf_token %}
+                </form>
+
+                <div class="col-1 text-right">
+                    <a href="{% url 'service_org_update' organization.pk %}" class="mr-1">
+                        Редактировать
+                    </a>
+
+                    <a class="delete-button" data-id="{{ organization.pk }}" href="#">
+                        Удалить
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Добавление организации</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="add_form" method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                    <button form="add_form" type="submit" class="btn btn-primary">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
