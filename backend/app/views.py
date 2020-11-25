@@ -169,34 +169,28 @@ class AppLogoutView(LogoutView):
 class CityViewSet(ModelViewSet):
     queryset = City.objects.all()
     serializer_class = CitySerializer
-    permission_classes = [IsAuthenticated]
 
 
 class LocationViewSet(ModelViewSet):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
-    permission_classes = [IsAuthenticated]
 
 
 class StateViewSet(ModelViewSet):
     queryset = State.objects.all()
     serializer_class = StateSerializer
-    permission_classes = [IsAuthenticated]
 
 
 class SpecificationsViewSet(ModelViewSet):
     queryset = Specifications.objects.all()
     serializer_class = SpecificationsSerializer
-    permission_classes = [IsAuthenticated]
 
 
 class CameraViewSet(ModelViewSet):
     queryset = Camera.objects.all()
     serializer_class = CameraSerializer
-    permission_classes = [IsAuthenticated]
 
 
 class ServiceViewSet(ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
-    permission_classes = [IsAuthenticated]
