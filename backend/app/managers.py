@@ -3,11 +3,6 @@ import datetime
 from django.db import models
 
 
-# class ProducerManager(models.Manager):
-#     def get_by_city(self, city):
-#         return self.filter(city__name=city)
-
-
 class SpecificationsManager(models.Manager):
     def get_older_than(self, term):
         return self.filter(date_of_manufacture__lte=datetime.date.today() - term)
@@ -39,11 +34,6 @@ class CameraManager(models.Manager):
 
     def filter_pk(self, pk):
         return self.filter(pk__in=pk)
-
-
-# class ServiceOrganizationManager(models.Manager):
-#     def get_by_city(self, city):
-#         return self.filter(city__name=city)
 
 
 class ServiceManager(models.Manager):

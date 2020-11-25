@@ -3,16 +3,15 @@ from django.urls import path
 from rest_framework.routers import SimpleRouter
 
 from app import views
-from app.views import *
 
 router = SimpleRouter()
 
-router.register(r'api/v1/city', CityViewSet)
-router.register(r'api/v1/location', LocationViewSet)
-router.register(r'api/v1/state', StateViewSet)
-router.register(r'api/v1/specifications', SpecificationsViewSet)
-router.register(r'api/v1/camera', CameraViewSet)
-router.register(r'api/v1/service', ServiceViewSet)
+router.register(r'api/v1/city', views.CityViewSet)
+router.register(r'api/v1/location', views.LocationViewSet)
+router.register(r'api/v1/state', views.StateViewSet)
+router.register(r'api/v1/specifications', views.SpecificationsViewSet)
+router.register(r'api/v1/camera', views.CameraViewSet)
+router.register(r'api/v1/service', views.ServiceViewSet)
 
 urlpatterns = [
     path('legacy/', views.AppLoginView.as_view(), name='login'),
@@ -23,7 +22,6 @@ urlpatterns = [
          name='delete_camera'),
     path('legacy/editing/update/<int:pk>', permission_required('app.add_camera')(views.CameraUpdateView.as_view()),
          name='update_camera'),
-
     path('legacy/audit', permission_required('app.add_camera')(views.ServiceCreateView.as_view()), name='audit_camera'),
     path('legacy/audit/reverse', permission_required('app.add_camera')(views.ServiceCreateReverseView.as_view()),
          name='audit_camera_reverse'),
@@ -34,16 +32,6 @@ urlpatterns = [
          name='camera_services_reverse'),
     path('legacy/audit/detail/<int:pk>', permission_required('app.add_camera')(views.AuditDetailView.as_view()),
          name='audit_detail'),
-
-    # path('service-organizations',
-    #      permission_required('app.add_serviceorganization')(views.ServiceOrganizationCreateView.as_view()),
-    #      name='service_org_list'),
-    # path('service-organizations/update/<int:pk>',
-    #      permission_required('app.add_serviceorganization')(views.ServiceOrganizationUpdateView.as_view()),
-    #      name='service_org_update'),
-    # path('service-organizations/delete/<int:pk>',
-    #      permission_required('app.add_serviceorganization')(views.ServiceOrganizationDeleteView.as_view()),
-    #      name='service_org_delete'),
 ]
 
 urlpatterns += router.urls

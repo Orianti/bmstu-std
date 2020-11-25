@@ -2,10 +2,6 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-
-# from app.forms import ServiceForm, CameraForm, AuthUserForm, ServiceOrganizationForm
-# from app.models import Camera, Service, ServiceOrganization
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from app.forms import ServiceForm, CameraForm, AuthUserForm
@@ -137,34 +133,6 @@ class AppLoginView(LoginView):
 class AppLogoutView(LogoutView):
     next_page = reverse_lazy('login')
 
-
-# class ServiceOrganizationCreateView(CreateView):
-#     model = ServiceOrganization
-#     template_name = 'app/contracts.html'
-#     form_class = ServiceOrganizationForm
-#     success_url = reverse_lazy('service_org_list')
-#
-#     def get_context_data(self, **kwargs):
-#         kwargs['service_organizations'] = ServiceOrganization.objects.all()
-#         return super().get_context_data(**kwargs)
-
-
-# class ServiceOrganizationUpdateView(UpdateView):
-#     model = ServiceOrganization
-#     template_name = 'app/contracts.html'
-#     form_class = ServiceOrganizationForm
-#     success_url = reverse_lazy('service_org_list')
-#
-#     def get_context_data(self, **kwargs):
-#         kwargs['update'] = True
-#         kwargs['service_organizations'] = ServiceOrganization.objects.all()
-#         return super().get_context_data(**kwargs)
-
-
-# class ServiceOrganizationDeleteView(DeleteView):
-#     model = ServiceOrganization
-#     template_name = 'app/contracts.html'
-#     success_url = reverse_lazy('service_org_list')
 
 class CityViewSet(ModelViewSet):
     queryset = City.objects.all()

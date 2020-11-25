@@ -6,7 +6,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 urlpatterns = [
     path(r'', include('app.urls')),
 
-    path(r'api/v1', get_schema_view(
+    path(r'api/v1/', get_schema_view(
         title='Traffic camera monitoring system',
         description='Traffic camera monitoring system: adding, deleting, and editing cameras, detecting errors and '
                     'failures, and ordering maintenance.',
