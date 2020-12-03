@@ -1,7 +1,5 @@
 from django.db import models
 
-from app.managers import SpecificationsManager, CameraManager, ServiceManager
-
 
 class City(models.Model):
     name = models.CharField(max_length=30, verbose_name='название')
@@ -74,8 +72,6 @@ class Specifications(models.Model):
     service_frequency = models.IntegerField(verbose_name='частота сервисного обслуживания')
     notes = models.TextField(verbose_name='заметки', default='', blank=True)
 
-    objects = SpecificationsManager()
-
     def get_type(self):
         return self.get_type_display()
 
@@ -95,8 +91,6 @@ class Camera(models.Model):
     specifications = models.OneToOneField(Specifications, on_delete=models.CASCADE, verbose_name='спецификации')
     state = models.ForeignKey(State, on_delete=models.CASCADE, verbose_name='состояние')
 
-    objects = CameraManager()
-
     def __str__(self):
         return f'Камера №{self.id}'
 
@@ -112,8 +106,6 @@ class Service(models.Model):
     registration_date = models.DateField(auto_now_add=True)
     service_data = models.DateField(verbose_name='дата сервиса')
     info = models.TextField(verbose_name='информация', default='', blank=True)
-
-    objects = ServiceManager()
 
     def __str__(self):
         return f'сервис №{self.id}'
