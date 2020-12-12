@@ -7,6 +7,10 @@ class City(models.Model):
     def __str__(self):
         return self.name
 
+    def update_name(self, name):
+        self.name = name
+        self.save()
+
     class Meta:
         verbose_name = 'город'
         verbose_name_plural = 'города'
@@ -18,11 +22,9 @@ class Location(models.Model):
     support = models.IntegerField(verbose_name='номер опоры')
     notes = models.TextField(verbose_name='заметки', default='', blank=True)
 
-    def get_location(self):
-        if self.support:
-            return f'{self.city}, {self.street} (опора {self.support})'
-        else:
-            return f'{self.city}, {self.street}'
+    def make_portable(self):
+        self.support = 0
+        self.save()
 
     def __str__(self):
         return self.get_location()
@@ -42,6 +44,10 @@ class State(models.Model):
 
     state = models.IntegerField(choices=STATES, verbose_name='состояние')
     logs = models.TextField(verbose_name='журнал', default='', blank=True)
+
+    def update_logs(self, logs):
+        self.logs = logs
+        self.save()
 
     def get_state(self):
         return f'{self.get_state_display()}'
