@@ -3,8 +3,8 @@ from unittest.mock import MagicMock
 from django.test import TestCase
 
 from app.models import City, Location, State
-from app.tests.location_builder import LocationBuilder
-from app.tests.state_stub import StateStub
+from app.tests.unit.location_builder import LocationBuilder
+from app.tests.unit.state_stub import StateStub
 
 
 class CityTestCase(TestCase):
