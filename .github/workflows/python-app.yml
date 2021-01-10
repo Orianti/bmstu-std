@@ -39,3 +39,5 @@ jobs:
       run: python manage.py test app/tests/unit
     - name: Run integration tests
       run: python manage.py test app/tests/integration
+    - name: Run e2e tests
+      run: python manage.py test app/tests/e2e
