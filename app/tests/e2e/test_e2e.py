@@ -1,4 +1,5 @@
 import os
+from memory_profiler import profile
 from http import HTTPStatus
 
 from django.test import TestCase
@@ -20,6 +21,7 @@ class AppTestCase(TestCase):
 
         self.assertEqual(self.n, self.passed)
 
+    # @profile
     def __test_e2e(self):
 
         # Add city
